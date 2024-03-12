@@ -15,8 +15,8 @@ var username = "apikey-v2-197dnkn3t48agl1wuzpj91l7lo4dkifrzhim8wjf5ykg";
 var password = "0f75c4be5fda84f99a0d4c582ef21b89";
 var app = express();
 const bodyParser = require('body-parser');
-const cors = require('cors');
-app.use(cors());
+//const cors = require('cors');
+//app.use(cors());
 // Configuring body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
