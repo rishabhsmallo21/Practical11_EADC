@@ -7,11 +7,11 @@ var Cloudant = require('@cloudant/cloudant');
 if (process.env.PORT) {
   PORT = process.env.PORT;
 } else {
-  PORT = 80;
+  PORT = 8000;
 }
 var Cloudant = require('@cloudant/cloudant');
 var url = "https://apikey-v2-197dnkn3t48agl1wuzpj91l7lo4dkifrzhim8wjf5ykg:0f75c4be5fda84f99a0d4c582ef21b89@3447fb1b-02ae-4331-923a-607d107471ea-bluemix.cloudantnosqldb.appdomain.cloud";
-var username = "apikey-v2-197dnkn3t48agl1wuzpj91l7lo4dkifrzhim8wjf5yk";
+var username = "apikey-v2-197dnkn3t48agl1wuzpj91l7lo4dkifrzhim8wjf5ykg";
 var password = "0f75c4be5fda84f99a0d4c582ef21b89";
 var app = express();
 const bodyParser = require('body-parser');
