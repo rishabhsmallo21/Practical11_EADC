@@ -20,53 +20,49 @@ const bodyParser = require('body-parser');
 // Configuring body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/public/index.html');
+});
+////////////
+app.post('/insert', (req, res) => {
+
+  const { name, email, database } = req.body;
+  
+  const data = {
+      name: name,
+      email: email
+  };
+///////
+Cloudant({ url: url, username: username, password: password }, function(err, cloudant, pong) {
+  if (err) {
+    return console.log('Failed to initialize Cloudant: ' + err.message);
+  }
+console.log(pong); // {"couchdb":"Welcome","version": ..
+
+cloudant.use(database).insert({ "name": name, "email": email } , (err, data) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(data); // { ok: true, id: 'rabbit', ...
+      }
+    });
+});
+//////
+/*
+  db.insert(data, (err, body, header) => {
+      if (err) {
+          console.log('Error inserting data:', err);
+          res.send('Error inserting data');
+      } else {
+          console.log('Data inserted successfully:', body);
+          res.send('Data inserted successfully');
+      }
+  });*/
+});
+
 /////////////
-app.get('/', function (req, res) {
-  res.send("Welcome to cloudant database on IBM Cloud");
-});
-
-
-
-//////////
-app.get('/list_of_databases', function (req, res) {
-  
-Cloudant({ url: url, username: username, password: password }, function(err, cloudant, pong) {
-  if (err) {
-    return console.log('Failed to initialize Cloudant: ' + err.message);
-  }
-console.log(pong); // {"couchdb":"Welcome","version": ...
-  
-  // Lists all the databases.
-  cloudant.db.list().then((body) => {
-res.send(body);
-  }).catch((err) => { res.send(err); });
-});
-});
-
-///////////////  create database
-app.post('/create-database', (req, res) => {
-var name=req.body.name;
-Cloudant({ url: url, username: username, password: password }, function(err, cloudant, pong) {
-  if (err) {
-    return console.log('Failed to initialize Cloudant: ' + err.message);
-  }
-console.log(pong); // {"couchdb":"Welcome","version": ...
-
-cloudant.db.create(name, (err) => {
-  if (err) {
-    res.send(err);
-  } else {
-res.send("database created")
-    
-  }
-});
-});
-});    
-
-
-
-
 ////////////// insert single document
+/*
 app.post('/insert-document', function (req, res) {
 var id,name,address,phone,age,database_name;
 database_name=req.body.db;
@@ -90,121 +86,62 @@ cloudant.use(database_name).insert({ "name": name, "address": address, "phone": 
     });
 });
 });   
-   
-
-
-
-
-/////   insert bulk documents
-app.post('/insert-bulk/:database_name', function (req, res) {
-var _id,name,address,phone,age;
-//var database_name;
-var database_name1=req.params.database_name;
-
-for (var i=0;i<3;i++) {
-
-  var student=
-{
-_id: req.body.docs[i].id,
-        name: req.body.docs[i].name,
-        address: req.body.docs[i].address,
-        phone: req.body.docs[i].phone,
-        age: req.body.docs[i].age,
-}
-//console.log(student);
-
-
-
-students.push(student);
-
-
-}
-
-console.log(students);
-Cloudant({ url: url, username: username, password: password }, function(err, cloudant, pong) {
-  if (err) {
-    return console.log('Failed to initialize Cloudant: ' + err.message);
-  }
-console.log(pong); // {"couchdb":"Welcome","version": ..
-
-cloudant.use(database_name1).bulk({ docs:students }, function(err) {
-  if (err) {
-    throw err;
-  }
-
-  res.send('Inserted all documents');
-});
-});
-}); 
-
-
-
-
- 
-
-
-
-
-//////////////// delete a document
-app.delete('/delete-document', function (req, res) {
-var id,rev,database_name;
-database_name=req.body.db;
-id=req.body.id;
-rev=req.body.rev;
-Cloudant({ url: url, username: username, password: password }, function(err, cloudant, pong) {
-  if (err) {
-    return console.log('Failed to initialize Cloudant: ' + err.message);
-  }
-console.log(pong); // {"couchdb":"Welcome","version": ..
-
-cloudant.use(database_name).destroy(id, rev, function(err) {
-  if (err) {
-    throw err;
-  }
-
-  res.send('document deleted');
-});
-});
-});
-
-////////////////
-
-
-
-
-
-
-//////////////// update existing document
-app.put('/update-document', function (req, res) {
-var id,rev,database_name;
-database_name=req.body.db;
-id=req.body.id;
-rev=req.body.rev;
-name = req.body.name;
-address =req.body.address;
-phone= req.body.phone;
-age= req.body.age;
-Cloudant({ url: url, username: username, password: password }, function(err, cloudant, pong) {
-  if (err) {
-    return console.log('Failed to initialize Cloudant: ' + err.message);
-  }
-console.log(pong); // {"couchdb":"Welcome","version": ..
-
-cloudant.use(database_name).insert({ _id:id , _rev: rev, "name": name , "age": age, "address": address, "phone": phone }, (err, data) => {
-      if (err) {
-        res.send(err);
-      } else {
-        res.send(data); // { ok: true, id: 'rabbit', ...
-      }
-    });
-});
-});
-
-
-//////////////
-
-
-
+   */
 app.listen(PORT);
 //console.log(message.getPortMessage() + PORT);
 
+
+
+/*
+const express = require('express');
+const bodyParser = require('body-parser');
+const Cloudant = require('@cloudant/cloudant');
+
+const app = express();
+const port = 3000;
+
+// Cloudant credentials
+const cloudantUsername = 'YOUR_CLOUDANT_USERNAME';
+const cloudantPassword = 'YOUR_CLOUDANT_PASSWORD';
+const cloudantDatabaseName = 'YOUR_DATABASE_NAME';
+
+// Initialize Cloudant
+const cloudant = new Cloudant({
+    account: cloudantUsername,
+    password: cloudantPassword
+});
+
+// Use the database
+const db = cloudant.db.use(cloudantDatabaseName);
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Serve HTML form
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
+
+// Insert data into Cloudant database
+app.post('/insert', (req, res) => {
+    const { name, email } = req.body;
+    const data = {
+        name: name,
+        email: email
+    };
+
+    db.insert(data, (err, body, header) => {
+        if (err) {
+            console.log('Error inserting data:', err);
+            res.send('Error inserting data');
+        } else {
+            console.log('Data inserted successfully:', body);
+            res.send('Data inserted successfully');
+        }
+    });
+});
+
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+});
+
+*/
