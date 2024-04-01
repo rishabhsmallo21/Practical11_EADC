@@ -47,101 +47,12 @@ cloudant.use(database).insert({ "name": name, "email": email } , (err, data) => 
       }
     });
 });
-//////
-/*
-  db.insert(data, (err, body, header) => {
-      if (err) {
-          console.log('Error inserting data:', err);
-          res.send('Error inserting data');
-      } else {
-          console.log('Data inserted successfully:', body);
-          res.send('Data inserted successfully');
-      }
-  });*/
+
 });
 
-/////////////
-////////////// insert single document
-/*
-app.post('/insert-document', function (req, res) {
-var id,name,address,phone,age,database_name;
-database_name=req.body.db;
-id= req.body.id,
-        name= req.body.name;
-        address= req.body.address;
-        phone= req.body.phone;
-        age= req.body.age;
-Cloudant({ url: url, username: username, password: password }, function(err, cloudant, pong) {
-  if (err) {
-    return console.log('Failed to initialize Cloudant: ' + err.message);
-  }
-console.log(pong); // {"couchdb":"Welcome","version": ..
 
-cloudant.use(database_name).insert({ "name": name, "address": address, "phone": phone, "age": age }, id , (err, data) => {
-      if (err) {
-        res.send(err);
-      } else {
-        res.send(data); // { ok: true, id: 'rabbit', ...
-      }
-    });
-});
-});   
-   */
 app.listen(PORT);
 //console.log(message.getPortMessage() + PORT);
 
 
 
-/*
-const express = require('express');
-const bodyParser = require('body-parser');
-const Cloudant = require('@cloudant/cloudant');
-
-const app = express();
-const port = 3000;
-
-// Cloudant credentials
-const cloudantUsername = 'YOUR_CLOUDANT_USERNAME';
-const cloudantPassword = 'YOUR_CLOUDANT_PASSWORD';
-const cloudantDatabaseName = 'YOUR_DATABASE_NAME';
-
-// Initialize Cloudant
-const cloudant = new Cloudant({
-    account: cloudantUsername,
-    password: cloudantPassword
-});
-
-// Use the database
-const db = cloudant.db.use(cloudantDatabaseName);
-
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// Serve HTML form
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
-});
-
-// Insert data into Cloudant database
-app.post('/insert', (req, res) => {
-    const { name, email } = req.body;
-    const data = {
-        name: name,
-        email: email
-    };
-
-    db.insert(data, (err, body, header) => {
-        if (err) {
-            console.log('Error inserting data:', err);
-            res.send('Error inserting data');
-        } else {
-            console.log('Data inserted successfully:', body);
-            res.send('Data inserted successfully');
-        }
-    });
-});
-
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
-
-*/
